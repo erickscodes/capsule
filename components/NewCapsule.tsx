@@ -24,6 +24,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@clerk/nextjs";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   cardName: z.string().min(2, {
@@ -45,14 +47,33 @@ const NewCapsule = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const router = useRouter();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     const emailAdress = user?.primaryEmailAddress?.emailAddress;
-    // each card will be a group
-    // email adress, document name, document description -> create new group : metadata -> email adress
+    console.log(emailAdress, values);
 
     console.log(values);
+
+    const response = await axios.post("/api/createCapsule", {
+      capsuleName: values.cardName,
+      capsuleDescription: values.cardDescription,
+      email: emailAdress,
+    });
+
+    console.log(response);
+    const data = await response.data;
+    // get capsule CID
+    const capsuleCid = data?.upload?.cid;
+    // push user into editor
+    router.push(`capsule/${capsuleCid}/editor`);
+
+    try {
+    } catch (error: any) {
+      console.log(error.message);
+    }
   }
   return (
     <Dialog>
