@@ -359,13 +359,13 @@ Los Angeles, CA 90001"
           <div>
             {url ? (
               <img
-                className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto"
+                className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto object-cover"
                 src={url}
                 alt="Image from Pinata"
               />
             ) : (
               <img
-                className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto"
+                className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto object-cover"
                 src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
                 alt="default"
               />

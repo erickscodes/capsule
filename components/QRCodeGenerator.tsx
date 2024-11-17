@@ -29,7 +29,7 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ link }) => {
       {error ? (
         <p className="text-red-600">{error}</p>
       ) : qrCode ? (
-        <Image src={qrCode} alt="QR Code" width={48} height={48} />
+        <Image src={qrCode} alt="QR Code" width={250} height={250} />
       ) : (
         <p>Loading QR Code...</p>
       )}
