@@ -19,7 +19,6 @@ export async function POST(request: NextRequest) {
       emergencyPhone,
       emergencyEmail,
       capsuleCid,
-      email,
     } = body;
 
     const upload = await pinata.upload

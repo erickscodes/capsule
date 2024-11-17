@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const data = await request.formData();
     const file: File | null = data.get("file") as unknown as File;
     const body = await request.json();
-    const { capsuleCid, email, type } = body;
+    const { capsuleCid, type } = body;
     let capsuleUploadType;
     if (type === "icon") {
       capsuleUploadType = "capsuleIcon";

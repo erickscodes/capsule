@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       capsuleCid: String(capsuleCid),
       type: "capsuleDocument",
     });
-    let documentNameAndCID = [];
+    const documentNameAndCID = [];
 
     for (let i = 0; i < documents.files.length; i++) {
       documentNameAndCID.push({

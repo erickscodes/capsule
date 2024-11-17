@@ -10,14 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { capsuleCid } = body;
-    const document = await pinata.files.list().metadata({
-      capsuleCid: capsuleCid,
-      type: "capsuleDocument",
-    });
-    const icon = await pinata.files.list().metadata({
-      capsuleCid: capsuleCid,
-      type: "capsuleIcon",
-    });
+
     const information = await pinata.files.list().metadata({
       capsuleCid: capsuleCid,
       type: "capsuleInformation",
