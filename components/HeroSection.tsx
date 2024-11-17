@@ -1,12 +1,4 @@
-import {
-  ArrowBigLeftDashIcon,
-  Cake,
-  Download,
-  File,
-  House,
-  Image,
-  Phone,
-} from "lucide-react";
+import { Cake, File, House, Image, Phone } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const HeroSection = () => {

@@ -1,13 +1,9 @@
 "use client";
 
-import { pinata } from "@/utils/config";
-import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 import {
-  ArrowBigLeftDashIcon,
   Cake,
   Copy,
-  Download,
   File,
   House,
   Image,

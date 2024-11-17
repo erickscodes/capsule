@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { Poppins } from "next/font/google";
 import {
   ClerkProvider,
@@ -9,7 +8,6 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import "./globals.css";
-import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 

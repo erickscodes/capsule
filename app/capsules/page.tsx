@@ -3,11 +3,10 @@
 import NewCapsule from "@/components/NewCapsule";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
-import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const { user } = useUser();
   const router = useRouter();
   const [capsules, setCapsules] = useState<any>([]);
@@ -88,4 +87,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
+import Image from "next/image";
 
 interface QRCodeGeneratorProps {
   link: string;
@@ -28,7 +29,7 @@ const QRCodeGenerator: React.FC<QRCodeGeneratorProps> = ({ link }) => {
       {error ? (
         <p className="text-red-600">{error}</p>
       ) : qrCode ? (
-        <img src={qrCode} alt="QR Code" className="w-48 h-48" />
+        <Image src={qrCode} alt="QR Code" width={48} height={48} />
       ) : (
         <p>Loading QR Code...</p>
       )}
