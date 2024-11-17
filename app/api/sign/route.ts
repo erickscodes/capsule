@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const url = await pinata.gateways.createSignedURL({
       cid: data.cid,
-      expires: 30,
+      expires: 300,
     });
     return NextResponse.json(url, { status: 200 });
   } catch (error) {

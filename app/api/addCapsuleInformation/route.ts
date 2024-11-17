@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
       })
       .addMetadata({
         keyvalues: {
-          capsuleOwner: email,
           capsuleCid: capsuleCid,
           type: "capsuleInformation",
         },

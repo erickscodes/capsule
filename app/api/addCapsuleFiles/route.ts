@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
     }
     const uploadData = await pinata.upload.file(file).addMetadata({
       keyvalues: {
-        capsuleOwner: email,
         capsuleCid: capsuleCid,
         type: capsuleUploadType,
       },

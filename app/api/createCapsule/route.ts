@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PinataSDK } from "pinata";
+import { v4 as uuidv4 } from "uuid";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -10,6 +11,10 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { capsuleName, capsuleDescription, email } = body;
+    // const uniqueNumber = uuidv4();
+    // const group = await pinata.groups.create({
+    //   name: uniqueNumber,
+    // });
 
     const upload = await pinata.upload
       .json({
