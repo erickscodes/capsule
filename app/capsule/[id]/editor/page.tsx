@@ -288,7 +288,7 @@ Los Angeles, CA 90001"
                       <FormItem>
                         <FormLabel>Phone</FormLabel>
                         <FormControl>
-                          <Input placeholder="Ex: 11/14/2024" {...field} />
+                          <Input placeholder="Ex: 123-456-7890" {...field} />
                         </FormControl>
                         <FormDescription>Optional</FormDescription>
                         <FormMessage />

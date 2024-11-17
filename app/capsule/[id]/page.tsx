@@ -271,7 +271,7 @@ const page = () => {
             <div className="flex flex-col items-center space-x-2">
               {/* content */}
               {information?.emergencyName ? (
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 font-semibold">
                   <p className="text-lg">
                     {"Name: " + information?.emergencyName}
                   </p>
@@ -279,8 +279,17 @@ const page = () => {
               ) : (
                 <div></div>
               )}
+              {information?.emergencyEmail ? (
+                <div className="flex space-x-2 font-semibold">
+                  <p className="text-lg">
+                    {"Email: " + information?.emergencyEmail}
+                  </p>
+                </div>
+              ) : (
+                <div></div>
+              )}
               {information?.emergencyPhone ? (
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 font-semibold">
                   <p className="text-lg">
                     {"Phone: " + information?.emergencyPhone}
                   </p>
