@@ -65,13 +65,13 @@ const Page = () => {
           <h1 className="text-gray-700">{item.keyvalues.description}</h1>
           <div className="w-full flex space-x-1 pt-20">
             <div
-              className="p-2 bg-[#14b8a6] rounded-lg font-semibold text-white w-1/2"
+              className="p-2 bg-[#14b8a6] rounded-lg font-semibold text-white w-1/2 cursor-pointer"
               onClick={() => handleClick(item.cid)}
             >
               View
             </div>
             <div
-              className="p-2 bg-gray-400 hover:text-white rounded-lg font-semibold text-gray-500 w-1/2"
+              className="p-2 bg-gray-400 hover:text-white rounded-lg font-semibold text-gray-500 w-1/2 cursor-pointer"
               onClick={() => handleDelete(item.cid)}
             >
               Delete
