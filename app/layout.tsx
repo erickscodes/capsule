@@ -11,6 +11,7 @@ import {
 import "./globals.css";
 import { useRouter } from "next/router";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"], // Specify the font weights you need
@@ -34,7 +35,7 @@ export default function RootLayout({
         <body className={`${poppins.className} antialiased`}>
           <header className="h-[60px] bg-[#14b8a6] items-center flex justify-between p-4">
             <div className="text-2xl text-white font-semibold">
-              <h1>Capsule</h1>
+              <Link href="/capsules">Capsule</Link>
             </div>
             <div>
               <SignedOut>

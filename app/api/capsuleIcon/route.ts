@@ -16,7 +16,11 @@ export async function POST(request: NextRequest) {
       type: "capsuleIcon",
     });
 
-    return NextResponse.json({ iconCID: icon.files[0].cid }, { status: 200 });
+    // const deleteFiles = await pinata.files.delete(idsToDelete);
+    return NextResponse.json(
+      { iconCID: icon.files[icon.files.length - 1].cid },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
     return NextResponse.json(

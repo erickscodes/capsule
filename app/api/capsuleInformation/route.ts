@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     });
 
     const { data, contentType } = await pinata.gateways.get(
-      information.files[0].cid
+      information.files[information.files.length - 1].cid
     );
 
     return NextResponse.json({ data }, { status: 200 });

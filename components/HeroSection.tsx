@@ -20,10 +20,12 @@ const HeroSection = () => {
         <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide font-semibold">
           Create a <span className="text-[#14b8a6] ">capsule</span> for you or
           your loved ones to create a sense of{" "}
-          <span className="text-[#14b8a6] ">safety</span>
+          <span className="text-[#14b8a6] ">security</span>
         </h1>
         <p className="mt-10 text-lg text-center text-slate-700 max-w-4xl">
-          Store your capsule securely in the cloud, accessible anytime.
+          Store your capsule securely using{" "}
+          <span className="text-violet-500 font-semibold">Pinata</span>,
+          accessible anytime.
         </p>
         <div className="flex justify-center my-10" onClick={handleClick}>
           <a
