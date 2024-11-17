@@ -9,27 +9,25 @@ const pinata = new PinataSDK({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { capsuleCid, email } = body;
-    const newCapsuleCid = String(capsuleCid);
-    // get capsule owned by user
-    const capsules = await pinata.files.list().metadata({
-      capsuleCid: newCapsuleCid,
-      capsuleOwner: email,
-    });
+    const { capsuleCid } = body;
     const document = await pinata.files.list().metadata({
-      capsuleCid: newCapsuleCid,
+      capsuleCid: capsuleCid,
       type: "capsuleDocument",
     });
     const icon = await pinata.files.list().metadata({
-      capsuleCid: newCapsuleCid,
+      capsuleCid: capsuleCid,
       type: "capsuleIcon",
     });
     const information = await pinata.files.list().metadata({
-      capsuleCid: newCapsuleCid,
+      capsuleCid: capsuleCid,
       type: "capsuleInformation",
     });
 
-    return NextResponse.json({ capsules }, { status: 200 });
+    const { data, contentType } = await pinata.gateways.get(
+      information.files[0].cid
+    );
+
+    return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

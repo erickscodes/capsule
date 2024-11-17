@@ -9,14 +9,14 @@ const pinata = new PinataSDK({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email } = body;
+    const { capsuleCid } = body;
 
-    // get capsule owned by user
-    const capsules = await pinata.files.list().metadata({
-      capsuleOwner: email,
-      type: "capsule",
+    const icon = await pinata.files.list().metadata({
+      capsuleCid: String(capsuleCid),
+      type: "capsuleIcon",
     });
-    return NextResponse.json({ capsules }, { status: 200 });
+
+    return NextResponse.json({ iconCID: icon.files[0].cid }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

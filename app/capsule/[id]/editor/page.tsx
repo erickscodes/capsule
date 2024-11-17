@@ -98,8 +98,8 @@ const page = () => {
             type: uploadType,
           },
         });
-      console.log(upload.name);
-      console.log(uploadType);
+
+      console.log(upload);
       if (uploadType == "capsuleDocument") {
         // create an array
         setDocumentList((prevDocuments) => [...prevDocuments, upload.name]);
@@ -404,7 +404,7 @@ Los Angeles, CA 90001"
                 <Image color="#4a5568" />
                 <h1 className="text-gray-700">{item}</h1>
               </div>
-              <Download color="gray" />
+              {/* <Download color="gray" /> */}
             </div>
           ))}
           <button className=" bg-[#14b8a6] px-8 py-2 mt-8 rounded-xl text-gray-100 font-semibold tracking-wide">

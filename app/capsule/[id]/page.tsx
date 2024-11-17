@@ -17,71 +17,40 @@ import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
-  const { user } = useUser();
   const params = useParams();
   const capsuleCid = String(params.id);
-  const [information, setInformation] = useState();
-  const [documents, setDocuments] = useState<string[]>([]);
-  const [documentNames, setDocumentNames] = useState<string[]>([]);
-  const [json, setJson] = useState({});
-  const [icon, setIcon] = useState();
+  const [information, setInformation] = useState<any>();
+  const [documents, setDocuments] = useState<any>([]);
+  const [iconSignedURL, setIconSignedURL] = useState("");
 
   // FETCH ALL RELATED INFORMATION AND GET EACH CID AND CREATE LINKS FOR EACH ONE
   const getInformation = async (cid: string) => {
-    const res = await axios.post("/api/capsule", {
-      capsuleCid: capsuleCid,
-      email: user?.primaryEmailAddress?.emailAddress,
-    });
+    try {
+      const res = await axios.post("/api/capsuleInformation", {
+        capsuleCid: capsuleCid,
+      });
 
-    const data = await res.data;
-
-    console.log(await data);
-    // information of capsule -> get newest one by doing length of files - 1
-    const infoCID =
-      data.combined.information.files[
-        data.combined.information.files.length - 1
-      ].cid;
-    // icon -> latest icon
-    const iconCID =
-      data.combined.icon.files[data.combined.icon.files.length - 1]?.cid;
-    // documents will have more than one file
-    const documentCIDs = [];
-    const documentsArr = data.combined.document.files;
-    console.log(documentsArr);
-    // loop through array and store in documentCIDs
-    for (let i = 0; i < documentsArr.length; i++) {
-      // push document CID into array
-      setDocumentNames((prevDocuments) => [
-        ...prevDocuments,
-        documentsArr[i].name,
-      ]);
-      documentCIDs.push(documentsArr[i].cid);
-    }
-    // fetch information
-    setInformation(await getSignedURL(infoCID));
-
-    setIcon(await getSignedURL(iconCID));
-
-    // fetch Document CID
-    for (let i = 0; i < documentCIDs.length; i++) {
-      const url = await getSignedURL(documentCIDs[i]);
-      setDocuments((prevDocuments) => [...prevDocuments, url]);
+      const data = await res.data;
+      setInformation(data.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  async function fetchJson(url: string) {
+  const getDocuments = async (cid: string) => {
     try {
-      // Send GET request with Axios
-      const response = await axios.get(url);
+      const res = await axios.post("/api/capsuleDocuments", {
+        capsuleCid: capsuleCid,
+      });
 
-      // Log the JSON data if request is successful
-      console.log("Fetched JSON:", response.data);
+      const data = await res.data;
+      setDocuments(data.documentNameAndCID);
     } catch (error) {
-      // Catch and log any error that occurs during the request
-      console.log("Error fetching the JSON:", error);
+      console.log(error);
     }
-  }
-  const getSignedURL = async (cid: string) => {
+  };
+
+  const signDocument = async (cid: string) => {
     const urlRequest = await fetch("/api/sign", {
       method: "POST",
       headers: {
@@ -90,74 +59,136 @@ const page = () => {
       body: JSON.stringify({ cid: cid }),
     });
     const url = await urlRequest.json();
-    return url;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
-  // add all data
+  const getIcon = async (cid: string) => {
+    try {
+      const res = await axios.post("/api/capsuleIcon", {
+        capsuleCid: capsuleCid,
+      });
+
+      const data = await res.data;
+      const urlRequest = await fetch("/api/sign", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cid: data.iconCID }),
+      });
+      const url = await urlRequest.json();
+      setIconSignedURL(url);
+      return url;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    console.log(icon);
-  }, [information, icon, documents]);
-  useEffect(() => {
-    getInformation(capsuleCid);
+    Promise.all([
+      getInformation(capsuleCid),
+      getDocuments(capsuleCid),
+      getIcon(capsuleCid),
+    ]);
   }, []);
+
+  useEffect(() => {
+    console.log(documents);
+  }, [information, documents]);
 
   return (
     <div className="flex items-center justify-center h-screen bg-white">
       <div className="bg-white font-semibold text-center rounded-3xl border shadow-md p-10 max-w-s">
         <div>
-          {icon && (
+          {iconSignedURL ? (
             <img
               className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto"
-              src={icon}
+              src={iconSignedURL}
+              alt="profile picture"
+            />
+          ) : (
+            <img
+              className="mb-3 w-32 h-32 rounded-full shadow-lg mx-auto"
+              src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+              alt="default"
             />
           )}
           <div className="flex flex-col w-full items-center space-y-1">
             <div>
-              <h1 className="text-lg text-gray-700">{}</h1>
+              {information?.fullName ? (
+                <h1 className="text-lg text-gray-700">
+                  {information.fullName}
+                </h1>
+              ) : (
+                <h1 className="text-lg text-gray-700">Full Name</h1>
+              )}
             </div>
             <div className="items-center flex space-x-2">
-              <Cake color="gray" height={20} width={20} />
-              <h3 className="text-sm text-gray-400 ">11/14/2024</h3>
+              {information?.dateOfBirth ? (
+                <div>
+                  <Cake color="gray" height={20} width={20} />
+                  <h3 className="text-sm text-gray-400 ">
+                    {information?.dateOfBirth}
+                  </h3>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
             <div className="items-center flex space-x-2">
-              <Phone color="gray" height={20} width={20} />
-              <h3 className="text-sm text-gray-400 ">292-294-2924</h3>
+              {information?.phoneNumber ? (
+                <div className="flex space-x-2">
+                  <Phone color="gray" height={20} width={20} />
+                  <h3 className="text-sm text-gray-400 ">
+                    {information?.phoneNumber}
+                  </h3>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
             <div className="flex space-x-2 content-center items-center text-wrap place-content">
-              <House color="gray" height={20} width={20} />
-              <p className="text-sm text-gray-400">
-                5210 Address Bay Drive, Irving, TX, 75038
-              </p>
+              {information?.address ? (
+                <div className="flex space-x-2">
+                  <House color="gray" height={20} width={20} />
+                  <p className="text-sm text-gray-400">
+                    {information?.address}
+                  </p>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
             <div className="flex space-x-2 content-center items-center text-wrap place-content">
-              <p className="text-sm text-gray-400">Vietnamese</p>
+              {information?.bio ? (
+                <div className="flex space-x-2">
+                  <p className="text-sm text-gray-400">{information?.bio}</p>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </div>
         <div className="pt-8">
           <h1 className="text-gray-700">Documents</h1>
         </div>
-        {documents.map((item, index) => (
-          <div className="flex items-center space-x-2" key={index}>
+
+        {documents.map((item: any, index: number) => (
+          <div
+            className="flex items-center space-x-2"
+            key={index}
+            onClick={() => signDocument(item.cid)}
+          >
             <div className="h-[40px] w-full content-center rounded-md flex items-center space-x-2 p-3 mt-2 text-sm border-dashed border-2">
               <File color="#4a5568" />
-              <a
-                href={documents[index]}
-                className="text-gray-700 hover:underline"
-                target="_blank"
-              >
-                {documentNames[index]}
-              </a>
+              <h1 className="text-gray-700 hover:underline cursor-pointer">
+                {item.name}
+              </h1>
             </div>
-            <a
-              href={documents[index]}
-              className="text-gray-700 hover:underline"
-              target="_blank"
-            >
-              <Link color="gray" width={20} height={20} />
-            </a>
             {/* <Download color="gray" /> */}
           </div>
         ))}
+
         <button className=" bg-[#14b8a6] px-8 py-2 mt-8 rounded-xl text-gray-100 font-semibold tracking-wide">
           Emergency Contacts
         </button>

@@ -9,14 +9,22 @@ const pinata = new PinataSDK({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email } = body;
+    const { capsuleCid } = body;
 
-    // get capsule owned by user
-    const capsules = await pinata.files.list().metadata({
-      capsuleOwner: email,
-      type: "capsule",
+    const documents = await pinata.files.list().metadata({
+      capsuleCid: String(capsuleCid),
+      type: "capsuleDocument",
     });
-    return NextResponse.json({ capsules }, { status: 200 });
+    let documentNameAndCID = [];
+
+    for (let i = 0; i < documents.files.length; i++) {
+      documentNameAndCID.push({
+        name: documents.files[i].name,
+        cid: documents.files[i].cid,
+      });
+    }
+
+    return NextResponse.json({ documentNameAndCID }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

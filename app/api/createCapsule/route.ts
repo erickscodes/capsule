@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PinataSDK } from "pinata";
-import { v4 as uuidv4 } from "uuid";
 
 const pinata = new PinataSDK({
   pinataJwt: process.env.PINATA_JWT!,
@@ -24,6 +23,7 @@ export async function POST(request: NextRequest) {
       .addMetadata({
         keyvalues: {
           name: capsuleName,
+          description: capsuleDescription,
           capsuleOwner: email,
           type: "capsule",
         },
