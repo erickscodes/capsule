@@ -6,12 +6,14 @@ import axios from "axios";
 import {
   ArrowBigLeftDashIcon,
   Cake,
+  Copy,
   Download,
   File,
   House,
   Image,
   Link,
   Phone,
+  Share,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -28,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import QRCodeGenerator from "@/components/QRCodeGenerator";
 
 const page = () => {
   const params = useParams();
@@ -35,6 +38,7 @@ const page = () => {
   const [information, setInformation] = useState<any>();
   const [documents, setDocuments] = useState<any>([]);
   const [iconSignedURL, setIconSignedURL] = useState("");
+  const [link, setLink] = useState("");
 
   // FETCH ALL RELATED INFORMATION AND GET EACH CID AND CREATE LINKS FOR EACH ONE
   const getInformation = async (cid: string) => {
@@ -108,9 +112,65 @@ const page = () => {
     console.log(documents);
   }, [information, documents]);
 
+  useEffect(() => {
+    // Ensure this runs only on the client
+    setLink(`${window.location.origin}/capsule/${capsuleCid}`);
+  }, [capsuleCid]);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(link).then(() => {
+      alert("Link copied to clipboard!");
+    });
+  };
+
   return (
     <div className="flex items-center justify-center h-screen bg-white">
       <div className="bg-white font-semibold text-center rounded-3xl border shadow-md p-10 max-w-s">
+        <div className="flex w-full justify-end pb-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Share className="cursor-pointer" color="gray" />
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Share link</DialogTitle>
+                <DialogDescription>
+                  Anyone who has this link will be able to view this.
+                </DialogDescription>
+              </DialogHeader>
+              <h1 className="text-lg font-semibold">Connect with NFC Tag</h1>
+              <div className="flex items-center space-x-2">
+                <div className="grid flex-1 gap-2">
+                  <Label htmlFor="link" className="sr-only">
+                    Link
+                  </Label>
+                  <Input id="link" defaultValue={link} readOnly />
+                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="px-3"
+                  onClick={handleCopy}
+                >
+                  <span className="sr-only">Copy</span>
+                  <Copy />
+                </Button>
+              </div>
+              <div>
+                {/* QR CODE */}
+                <h1 className="text-lg font-semibold">Save this QR Code</h1>
+                <QRCodeGenerator link={link} />
+              </div>
+              <DialogFooter className="sm:justify-start">
+                <DialogClose asChild>
+                  <Button type="button" variant="secondary">
+                    Close
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
         <div>
           {iconSignedURL ? (
             <img
