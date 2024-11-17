@@ -15,6 +15,19 @@ import {
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const page = () => {
   const params = useParams();
@@ -124,7 +137,7 @@ const page = () => {
             </div>
             <div className="items-center flex space-x-2">
               {information?.dateOfBirth ? (
-                <div>
+                <div className="flex space-x-2">
                   <Cake color="gray" height={20} width={20} />
                   <h3 className="text-sm text-gray-400 ">
                     {information?.dateOfBirth}
@@ -189,9 +202,53 @@ const page = () => {
           </div>
         ))}
 
-        <button className=" bg-[#14b8a6] px-8 py-2 mt-8 rounded-xl text-gray-100 font-semibold tracking-wide">
-          Emergency Contacts
-        </button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button className=" bg-[#14b8a6] px-8 py-2 mt-8 rounded-xl text-gray-100 font-semibold tracking-wide">
+              Emergency Contacts
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Emergency Contacts</DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col items-center space-x-2">
+              {/* content */}
+              {information?.emergencyName ? (
+                <div className="flex space-x-2">
+                  <p className="text-lg">
+                    {"Name: " + information?.emergencyName}
+                  </p>
+                </div>
+              ) : (
+                <div></div>
+              )}
+              {information?.emergencyPhone ? (
+                <div className="flex space-x-2">
+                  <p className="text-lg">
+                    {"Phone: " + information?.emergencyPhone}
+                  </p>
+                </div>
+              ) : (
+                <div></div>
+              )}
+              {information?.email ? (
+                <div className="flex space-x-2">
+                  <p className="text-lg">{`Email: ` + information?.email}</p>
+                </div>
+              ) : (
+                <div></div>
+              )}
+            </div>
+            <DialogFooter className="sm:justify-start">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

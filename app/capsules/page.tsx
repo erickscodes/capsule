@@ -34,9 +34,10 @@ const page = () => {
   };
   return (
     <div className="p-4 space-y-4">
+      <h1 className="text-xl font-semibold tracking-wider">My Capsules</h1>
       {capsules.map((item: any, index: number) => (
         <div
-          className="min-w-[300px] min-h-[200px] max-w-[600px] rounded-lg p-4 cursor-pointer border-dashed border-2"
+          className="min-w-[300px] min-h-[200px] max-w-[400px] rounded-lg p-4 cursor-pointer border-dashed border-2"
           key={index}
           onClick={() => handleClick(item.cid)}
         >
